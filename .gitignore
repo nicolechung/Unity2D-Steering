@@ -1,0 +1,7 @@
+*.DS_Store
+*.csproj
+*.pidb
+*.sln
+
+# ignore meta just for this repo, not other unity projects!
+*.meta
