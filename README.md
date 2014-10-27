@@ -7,7 +7,7 @@ These scripts use layers to exclude the collider that the raycast originates fro
 
 For some reason in Unity2D, if the object the raycast originates from (i.e. transform.position) has a collider, that collider is returned in the resulting RaycastHit2D.
 
-I tried using various ways to exclude this (for example, comparing the _normal_ of the RaycastHit2D with the _inverse of the direction_ of the Raycast) but it did not work for me.
+I tried using various ways to exclude this (for example, comparing the *normal* of the RaycastHit2D with the _inverse of the direction_ of the Raycast) but it did not work for me.
 
 To use layers
 
