@@ -1,5 +1,6 @@
 Pull requests welcome.
 
+Version like...0.0.1. Not ready for use yet.
 
 #Uses Layers
 These scripts use layers to exclude the collider that the raycast originates from.
@@ -10,7 +11,8 @@ I tried using various ways to exclude this (for example, comparing the normal of
 
 To use layers
 
-Choose a layer from the inspector for the objects you want to include as "obstacles".
+Choose a layer from the inspector for the objects you want to include as "obstacles":
+
 ![Use the dropdown](https://raw.githubusercontent.com/nicolechung/Unity2D-Steering/master/images/inspector-layers.png)
 
 Find the number of the layer by going to:
