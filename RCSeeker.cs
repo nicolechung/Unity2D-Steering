@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 
 // trying out wandering with raycasting and update
-public class Seeker2 : MonoBehaviour {
+public class RCSeeker : MonoBehaviour {
 	
 	
 	public float directionDistance = 2;
@@ -22,16 +22,16 @@ public class Seeker2 : MonoBehaviour {
 	private float viewportHeight;
 	private Bounds cameraBounds;
 	private string state;
-
+	
 	private bool isHitTarget;
-
+	
 	private static bool DEBUG = true;
 	private static bool DEBUG_DRAW = true;
 	private List<float> rotations;
-
+	
 	// todo: store am array of directions
 	Vector2 origin;
-
+	
 	
 	// Use this for initialization
 	void Start () {
@@ -40,19 +40,19 @@ public class Seeker2 : MonoBehaviour {
 		isHitTarget = false;
 		rotations = new List<float>();
 		StartCoroutine( Seek () );
-
+		
 	}
 	
 	void OnCollisionEnter2D (Collision2D col) {
-
+		
 		if (col.gameObject.name == "Player") {
 			isHitTarget = true;
 		}
 	}
-
+	
 	IEnumerator Seek() {
 		// check if there is something in the way of the target
-
+		
 		while (!isHitTarget && state=="seek") {
 			bool seek;
 			seek = seekCheck();
@@ -66,23 +66,23 @@ public class Seeker2 : MonoBehaviour {
 			yield return null;
 		}
 	}
-
-
+	
+	
 	IEnumerator AvoidMove() {
 		Debug.Log ("--moving around obstacle--");
 		bool obstacle;
 		bool seek;
-
+		
 		while(state=="avoid") {
 			// check if there is something in the way of the target
-
+			
 			seek = seekCheck();
 			obstacle = obstacleCheck();
 			Debug.Log ("--is there an obstacle?--");
 			Debug.Log (obstacle);
 			Debug.Log ("avoiding: seek?");
 			Debug.Log (seek);
-
+			
 			// inside here, if there is an obstacle, change state to "rotate"
 			if (obstacle) {
 				state="rotate";
@@ -95,22 +95,22 @@ public class Seeker2 : MonoBehaviour {
 				StartCoroutine( Seek () );
 			} 
 			transform.Translate (Vector2.up * speed * Time.smoothDeltaTime);
-
+			
 			yield return null;
 		}
-
+		
 	}
-
+	
 	bool hasObstacles(Vector2 direction) {
 		RaycastHit2D[] hits;
 		RaycastHit2D[] hitsLeft;
 		RaycastHit2D[] hitsRight;
 		
-
+		
 		Vector2 directionLeft;
 		Vector2 directionRight;
 		// move the origin of the Raycast so that it's outside of the collider
-
+		
 		bool hasObstacle = false;
 		Debug.DrawRay (transform.position, direction*directionDistance, Color.blue);
 		
@@ -147,21 +147,21 @@ public class Seeker2 : MonoBehaviour {
 		
 		return hasObstacle;
 	}
-
-
+	
+	
 	bool seekCheck() {
-
+		
 		if (state=="seek") {
 			float zRotation = Mathf.Atan2( (Target.transform.position.y - transform.position.y), (Target.transform.position.x - transform.position.x) ) * Mathf.Rad2Deg - 90;
 			transform.eulerAngles = new Vector3(0, 0, zRotation);
 		}
-
+		
 		Vector2 direction = (Target.transform.position - transform.position).normalized;
-
+		
 		bool hasObstacle = hasObstacles(direction);
-
+		
 		return !hasObstacle;
-	
+		
 	}
 	
 	bool obstacleCheck() {
@@ -173,12 +173,12 @@ public class Seeker2 : MonoBehaviour {
 		Vector2 directionLeft;
 		Vector2 directionRight;
 		bool hasObstacle = false;
-
-
+		
+		
 		direction = transform.up;
 		Debug.DrawRay (transform.position, direction*directionDistance, Color.red);
 		hits = Physics2D.RaycastAll (transform.position, direction, directionDistance);
-
+		
 		Vector2 left = new Vector2(-0.3F, 0);
 		directionLeft = direction + left;
 		hitsLeft =  Physics2D.RaycastAll (transform.position, directionLeft, directionDistance, 1 << 8);
@@ -188,13 +188,13 @@ public class Seeker2 : MonoBehaviour {
 		directionRight = direction + right;
 		hitsRight =  Physics2D.RaycastAll (transform.position, directionRight, directionDistance, 8);
 		Debug.DrawRay (transform.position, directionRight*directionDistance, Color.blue);
-
+		
 		foreach(RaycastHit2D hit in hits) {
 			if (hit && hit.normal != -direction) {
 				hasObstacle = true;
 			}
 		}
-
+		
 		foreach(RaycastHit2D hit in hitsLeft) {
 			if (hit && hit.collider) {
 				hasObstacle = true;
@@ -206,10 +206,10 @@ public class Seeker2 : MonoBehaviour {
 				hasObstacle = true;
 			}
 		}
-
+		
 		return hasObstacle;
 	}
-
+	
 	
 	// need optional last direction
 	
@@ -220,14 +220,15 @@ public class Seeker2 : MonoBehaviour {
 		Vector2 directionChange = new Vector2(randomAngle, 0);
 		if (rotations.Count > 0) {
 			foreach(float elem in rotations) {
-				if ( Enumerable.Range(elem-0.2f, elem+0.2f).Contains(directionChange) ) {
-
+				if ( CheckRange(elem, elem-0.2F, elem+0.2F) ) {
+					// too close to the last one
+					avoidObstacle();
+					break;
+					
 				}
 			}
 		}
-		if (directionChange) {
-			avoidObstacle ();
-		}
+		
 		Vector2 originalDirection = Target.transform.position;
 		Vector2 direction = originalDirection + directionChange;
 		if (direction == originalDirection) {
@@ -244,43 +245,45 @@ public class Seeker2 : MonoBehaviour {
 			// if there is no obstacle, then actually rotate in that direction
 			state="start-move";
 		} else {
-			avoidObstacle (); // recursive
-
+			rotations.Add(randomAngle);
+			avoidObstacle(); // recursive
+			
 		}
 	}
-
+	
 	
 	
 	
 	// Update is called once per frame
 	void Update () {
-
+		
 		switch(state) {
-			case "seek":
-
-				break;
-				
-			case "start-move":
+		case "seek":
+			
+			break;
+			
+		case "start-move":
 			state="avoid";
 			StartCoroutine( AvoidMove() );
-
-				break;
-				
-			case "rotate":
-				avoidObstacle();
-				break;
-				
-			default: 
-				
-				break;
-			}
 			
+			break;
+			
+		case "rotate":
+			avoidObstacle();
+			break;
+			
+		default: 
+			
+			break;
 		}
-
-	// helper
-	static bool CheckRange(this float num, float min, float max)
-	{
+		
+	}
+	
+	
+	// helpers
+	
+	bool CheckRange(float num, float min, float max) {
 		return num > min && num < max;
 	}
-
+	
 }
