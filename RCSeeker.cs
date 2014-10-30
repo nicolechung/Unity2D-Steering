@@ -208,10 +208,11 @@ public class RCSeeker : MonoBehaviour {
 		while(state=="rotate") {
 			// save randomAngle in a array
 			Debug.Log ("--state: rotate--");
-			float randomAngle = Random.Range (rotationRange, rotationRange);
+			float randomAngle = Random.Range (-rotationRange, rotationRange);
 			Vector2 directionChange = new Vector2(randomAngle, 0);
 			if (rotations.Count > 0) {
 				foreach(float elem in rotations) {
+					Debug.Log (elem);
 					if ( CheckRange(elem, elem-0.1F, elem+0.1F) ) {
 						Debug.Log ("--too close to last attempt--");
 						yield return null;					
@@ -231,6 +232,8 @@ public class RCSeeker : MonoBehaviour {
 				Debug.Log ("---no obstacle, moving:---");
 				float zRotation = Mathf.Atan2( (direction.y - transform.position.y), (direction.x - transform.position.x) ) * Mathf.Rad2Deg - 90;
 				transform.eulerAngles = new Vector3(0, 0, zRotation);
+				// clear the rotations list
+				rotations.Clear();
 				// if there is no obstacle, then actually rotate in that direction
 				state="start-move";
 			} else {
