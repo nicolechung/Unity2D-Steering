@@ -25,4 +25,13 @@ Edit > Project Settings > Tags and Layers
 #Seeker
 I have multiple colliders on my Seeker (Box2D and Circle);
 
+Create your Seeker game object.
+
+Add RCSeeker.cs script to the game object.
+
+
 #Wander
+
+Create your Wanderer game object.
+
+Add RCWanderer.cs script to the game object.
