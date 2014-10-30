@@ -22,12 +22,11 @@ public class RCWander : MonoBehaviour {
 	private string state;
 
 	
-	private static bool DEBUG = true;
-	private static bool DEBUG_DRAW = true;
-	private float rotationRange = 2;
+	private static bool DEBUG = false; // to turn debug messages on an off
+	private static bool DEBUG_DRAW = false; // to turn Debug lines on and off
 	private static int LAYER_MASK = 8; // make sure your player isn't on this list!
-
-
+	public int straightAhead = 10; // how much to go in a given direction before turning
+	private int count;
 	// todo: store am array of directions
 	Vector2 origin;
 	
@@ -36,6 +35,7 @@ public class RCWander : MonoBehaviour {
 	void Start () {
 		// start out seeking if the Target is within range
 		state = "wander";
+		count = straightAhead;
 		StartCoroutine( Wander () );
 		
 	}
@@ -44,7 +44,7 @@ public class RCWander : MonoBehaviour {
 	IEnumerator Wander() {
 		// check if there is something in the way of the target
 		
-		while (state=="wander") {
+		while (state=="wander" && count > 0) {
 			bool obstacles;
 			Vector2 direction = transform.up;
 			if (DEBUG) Debug.Log (direction);
@@ -58,6 +58,8 @@ public class RCWander : MonoBehaviour {
 				state="start-rotate";
 				yield return null;
 			}
+			count--;
+			if (count == 0) state = "start-rotate";
 			yield return null;
 		}
 	}
@@ -143,35 +145,10 @@ public class RCWander : MonoBehaviour {
 	
 	IEnumerator rotatePlayer() {
 		while(state=="rotate") {
-			Debug.Log ("wander: rotating player");
-			Debug.DrawRay(transform.position, transform.right, Color.green);
-			RaycastHit2D []right = Physics2D.RaycastAll(transform.position, transform.right, directionDistance, 1 << LAYER_MASK);
-			RaycastHit2D []left = Physics2D.RaycastAll(transform.position, -transform.right, directionDistance, 1 << LAYER_MASK);
+			if (DEBUG) Debug.Log ("wander: rotating player");
+			if (DEBUG_DRAW) Debug.DrawRay(transform.position, transform.right, Color.green);
 
-			bool rotate = false;
-
-//			foreach(RaycastHit2D hit in right) {
-//				if (!hit.collider) {
-//					if (DEBUG) Debug.Log ("something on the right, rotating");
-//					rotate = true;
-//				}
-//			}
-//
-//			foreach(RaycastHit2D hit in left) {
-//				if (!hit.collider) {
-//					if (DEBUG) Debug.Log ("something on the left, rotating");
-//					rotate = true;	
-//				}
-//			}
-
-//			if (rotate) {
-//				Debug.Log ("rotating");
-//				transform.rotation = Random.rotation;
-//				/* set rotation to only be on the z-axis for 2D */
-//				transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
-//
-//			} 
-			Debug.Log ("rotating");
+			if (DEBUG) Debug.Log ("rotating");
 			transform.rotation = Random.rotation;
 			/* set rotation to only be on the z-axis for 2D */
 			transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
@@ -195,6 +172,7 @@ public class RCWander : MonoBehaviour {
 			
 		case "start-rotate":
 			state="rotate";
+			count = straightAhead;	
 			StartCoroutine( rotatePlayer() );
 			break;
 			

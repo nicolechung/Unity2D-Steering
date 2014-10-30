@@ -35,3 +35,6 @@ Add RCSeeker.cs script to the game object.
 Create your Wanderer game object.
 
 Add RCWanderer.cs script to the game object.
+
+## todos
+Build "Lock to Camera view" so that the player sticks to the camera viewport
