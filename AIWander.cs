@@ -11,7 +11,6 @@ public class AIWander : MonoBehaviour {
 	public float rotateSpeed = 20;
 
 	public bool LockToCameraViewport;
-
 	
 	private float viewportWidth;
 	private float viewportHeight;
@@ -30,10 +29,9 @@ public class AIWander : MonoBehaviour {
 		/* Below is a hack so that this.gameObject is not included as a collider */
 		collider2D.enabled = false;
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up);
-		RaycastHit2D circleHit = Physics2D.CircleCast(transform.position, 1, transform.up, collisionDistance);
 		collider2D.enabled = true;
 
-		if ( !hit.collider && !circleHit.collider ) {
+		if ( !hit.collider ) {
 			transform.Translate(Vector2.up * speed * Time.smoothDeltaTime);
 
 		} else {
@@ -41,8 +39,7 @@ public class AIWander : MonoBehaviour {
 			Debug.DrawRay(transform.position, transform.right, Color.green);
 			collider2D.enabled = false;
 			RaycastHit2D right = Physics2D.Raycast(transform.position, transform.right, directionDistance);
-			circleHit = Physics2D.CircleCast(transform.position, collisionDistance, transform.up);
-			RaycastHit2D left = Physics2D.Raycast(transform.position, transform.right, directionDistance);
+			RaycastHit2D left = Physics2D.Raycast(transform.position, -transform.right, directionDistance);
 			collider2D.enabled = true;
 
 
@@ -59,12 +56,7 @@ public class AIWander : MonoBehaviour {
 				transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
 			}
 
-			if ( circleHit.collider ) {
-				transform.rotation = Random.rotation;
-				/* set rotation to only be on the z-axis for 2D */
-				transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
-
-			}
+		
 
 		
 

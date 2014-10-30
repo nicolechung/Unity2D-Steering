@@ -149,7 +149,7 @@ public class RCSeeker : MonoBehaviour {
 		Vector2 right = new Vector2(0.3F, 0);
 		Vector2 rightOrigin = new Vector2(transform.position.x, transform.position.y) + right;
 		directionRight = direction + right;
-		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, directionDistance, 8);
+		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, directionDistance, 1 << 8);
 		Debug.DrawRay (rightOrigin, directionRight*directionDistance, color);
 		// is there a collision?
 		
