@@ -116,24 +116,22 @@ public class RCWander : MonoBehaviour {
 		// is there a collision?
 		
 		foreach(RaycastHit2D hit in hits) {
-			Debug.Log(hit);
-			Debug.Log (hit.collider);
 			if (hit && hit.collider) {
 				hasObstacle = true;
 			}
 		}
 		
-//		foreach(RaycastHit2D hit in hitsLeft) {
-//			if (hit && hit.collider) {
-//				hasObstacle = true;
-//			}
-//		}
-//		
-//		foreach(RaycastHit2D hit in hitsRight) {
-//			if (hit && hit.collider) {
-//				hasObstacle = true;
-//			}
-//		}
+		foreach(RaycastHit2D hit in hitsLeft) {
+			if (hit && hit.collider) {
+				hasObstacle = true;
+			}
+		}
+		
+		foreach(RaycastHit2D hit in hitsRight) {
+			if (hit && hit.collider) {
+				hasObstacle = true;
+			}
+		}
 		
 		return hasObstacle;
 	}
@@ -152,29 +150,34 @@ public class RCWander : MonoBehaviour {
 
 			bool rotate = false;
 
-			foreach(RaycastHit2D hit in right) {
-				if (!hit.collider) {
-					if (DEBUG) Debug.Log ("something on the right, rotating");
-					rotate = true;
-				}
-			}
+//			foreach(RaycastHit2D hit in right) {
+//				if (!hit.collider) {
+//					if (DEBUG) Debug.Log ("something on the right, rotating");
+//					rotate = true;
+//				}
+//			}
+//
+//			foreach(RaycastHit2D hit in left) {
+//				if (!hit.collider) {
+//					if (DEBUG) Debug.Log ("something on the left, rotating");
+//					rotate = true;	
+//				}
+//			}
 
-			foreach(RaycastHit2D hit in left) {
-				if (!hit.collider) {
-					if (DEBUG) Debug.Log ("something on the left, rotating");
-					rotate = true;	
-				}
-			}
-
-			if (rotate) {
-				Debug.Log ("rotating");
-				transform.rotation = Random.rotation;
-				/* set rotation to only be on the z-axis for 2D */
-				transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
-
-			} 
-
-
+//			if (rotate) {
+//				Debug.Log ("rotating");
+//				transform.rotation = Random.rotation;
+//				/* set rotation to only be on the z-axis for 2D */
+//				transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
+//
+//			} 
+			Debug.Log ("rotating");
+			transform.rotation = Random.rotation;
+			/* set rotation to only be on the z-axis for 2D */
+			transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
+			state = "wander";
+			StartCoroutine( Wander () );
+			
 			yield return null;
 		}
 		
