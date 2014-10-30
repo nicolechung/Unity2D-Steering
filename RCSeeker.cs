@@ -77,7 +77,7 @@ public class RCSeeker : MonoBehaviour {
 		
 		while(state=="avoid") {
 			// check if there is something in the way of the target
-			
+			transform.Translate (Vector2.up * speed * Time.smoothDeltaTime);
 			seek = seekCheck();
 			obstacle = obstacleCheck();
 			Debug.Log ("--is there an obstacle?--");
@@ -213,7 +213,7 @@ public class RCSeeker : MonoBehaviour {
 			if (rotations.Count > 0) {
 				foreach(float elem in rotations) {
 					Debug.Log (elem);
-					if ( CheckRange(elem, elem-0.1F, elem+0.1F) ) {
+					if ( CheckRange(randomAngle, elem-0.1F, elem+0.1F) ) {
 						Debug.Log ("--too close to last attempt--");
 						yield return null;					
 					}
