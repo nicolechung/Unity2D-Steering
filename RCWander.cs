@@ -147,29 +147,31 @@ public class RCWander : MonoBehaviour {
 		while(state=="rotate") {
 			Debug.Log ("wander: rotating player");
 			Debug.DrawRay(transform.position, transform.right, Color.green);
-			RaycastHit2D []right = Physics2D.RaycastAll(transform.position, transform.right, directionDistance);
-			RaycastHit2D []left = Physics2D.RaycastAll(transform.position, -transform.right, directionDistance);
+			RaycastHit2D []right = Physics2D.RaycastAll(transform.position, transform.right, directionDistance, 1 << LAYER_MASK);
+			RaycastHit2D []left = Physics2D.RaycastAll(transform.position, -transform.right, directionDistance, 1 << LAYER_MASK);
 
 			bool rotate = false;
+
 			foreach(RaycastHit2D hit in right) {
-				if (hit && hit.collider) {
+				if (!hit.collider) {
+					if (DEBUG) Debug.Log ("something on the right, rotating");
 					rotate = true;
 				}
 			}
 
 			foreach(RaycastHit2D hit in left) {
-				if (hit && hit.collider) {
-					rotate = true;
+				if (!hit.collider) {
+					if (DEBUG) Debug.Log ("something on the left, rotating");
+					rotate = true;	
 				}
 			}
 
 			if (rotate) {
+				Debug.Log ("rotating");
 				transform.rotation = Random.rotation;
 				/* set rotation to only be on the z-axis for 2D */
 				transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
-				state="wander";
-				StartCoroutine( Wander() );
-				yield return null;
+
 			} 
 
 
