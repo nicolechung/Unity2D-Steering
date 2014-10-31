@@ -29,6 +29,20 @@ Create your Seeker game object.
 
 Add RCSeeker.cs script to the game object.
 
+#Flee
+In progress
+
+Create the game object that needs to flee.
+
+Add RCFlee.cs script to the game object.
+
+Set the layer number in the LAYER_MASK inside the script. 
+
+For example, if all of your obstacles are on layer 8:
+
+```c#
+private static int LAYER_MASK = 8; // make sure your player isn't on this list!
+```
 
 #Wander
 
@@ -36,5 +50,28 @@ Create your Wanderer game object.
 
 Add RCWanderer.cs script to the game object.
 
-## todos
+Set the layer number in the LAYER_MASK inside the script. 
+
+For example, if all of your obstacles are on layer 8:
+
+```c#
+private static int LAYER_MASK = 8; // make sure your player isn't on this list!
+```
+
+## To do list for wanderer
 Build "Lock to Camera view" so that the player sticks to the camera viewport
+
+#Tweakables
+
+##collisionDistance
+This is the distance the object "looks ahead" for obstacles
+
+##Target
+This is the target (Game object) that the game object is either seeking or fleeing.
+
+##DEBUG, DEBUG_DRAW, DEBUG_ERROR
+You can turn these on or off.
+
+DEBUG_DRAW shows the lines (rays) of the raycast.
+
+DEBUG_ERROR will function as breakpoints if you select "Error Pause" in the Unity player...since Monodevelop has such a broken Unity debugger feature (for Macs at least)

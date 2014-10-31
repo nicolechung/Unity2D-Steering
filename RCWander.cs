@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class RCWander : MonoBehaviour {
 	
 	
-	public float directionDistance = 2;
+	public float collisionDistance = 2;
 	public float speed = 1;
 	private float direction;
 	public bool LockToCameraViewport;
@@ -100,21 +100,21 @@ public class RCWander : MonoBehaviour {
 		}
 		
 		bool hasObstacle = false;
-		if (DEBUG_DRAW) Debug.DrawRay (transform.position, direction*directionDistance, color);
+		if (DEBUG_DRAW) Debug.DrawRay (transform.position, direction*collisionDistance, color);
 		
-		hits = Physics2D.RaycastAll (transform.position, direction, directionDistance, 1 << LAYER_MASK);
+		hits = Physics2D.RaycastAll (transform.position, direction, collisionDistance, 1 << LAYER_MASK);
 		
 		Vector2 left = new Vector2(-0.3F, 0);
 		Vector2 leftOrigin = new Vector2(transform.position.x, transform.position.y) + left;
 		directionLeft = direction + left;
-		hitsLeft =  Physics2D.RaycastAll (leftOrigin, directionLeft, directionDistance, 1 << LAYER_MASK);
-		if (DEBUG_DRAW) Debug.DrawRay (leftOrigin, directionLeft*directionDistance, color);
+		hitsLeft =  Physics2D.RaycastAll (leftOrigin, directionLeft, collisionDistance, 1 << LAYER_MASK);
+		if (DEBUG_DRAW) Debug.DrawRay (leftOrigin, directionLeft*collisionDistance, color);
 		
 		Vector2 right = new Vector2(0.3F, 0);
 		Vector2 rightOrigin = new Vector2(transform.position.x, transform.position.y) + right;
 		directionRight = direction + right;
-		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, directionDistance, 1 << LAYER_MASK);
-		if (DEBUG_DRAW) Debug.DrawRay (rightOrigin, directionRight*directionDistance, color);
+		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, collisionDistance, 1 << LAYER_MASK);
+		if (DEBUG_DRAW) Debug.DrawRay (rightOrigin, directionRight*collisionDistance, color);
 		// is there a collision?
 		
 		foreach(RaycastHit2D hit in hits) {
