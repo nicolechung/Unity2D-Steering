@@ -22,15 +22,16 @@ Edit > Project Settings > Tags and Layers
 Then set the "Layer to Mask" to same number as your layer.
 
 #Seeker
-I have multiple colliders on my Seeker (Box2D and Circle);
+I have multiple colliders on my Seeker (__BoxCollider2D__ and __CircleCollider2D__);
 
-This seems to work slightly better if you put on a __CircleCollider2D__ that is slightly larger than your game object and if you add a very slippery and bouncy physics material to your CircleCollider2D. 
+This seems to work slightly better if you put on a __CircleCollider2D__ that is slightly larger than your game object and if you add a very slippery and bouncy physics material to your __CircleCollider2D__. 
 
-This is because if your seeker is directly touching an obstacle, when it does a Raycast check it keeps getting an "obstacle" no matter what (since it is touching one!). To avoid this I do a slight "bump" translate out but having a slightly larger circle collider helps with this.
+This is because if your seeker is directly touching an obstacle, when it does a Raycast check it keeps getting an __
+"obstacle"__ no matter what (since it is touching one!). To avoid this I do a slight "bump" translate out but having a slightly larger circle collider helps with this.
 
 Create your Seeker game object.
 
-Add RCSeeker.cs script to the game object.
+Add __RCSeeker.cs__ script to the game object.
 
 This isn't the "smartest" seek script - if your Target hides directly behind an obstacle the seeker just turns back and forward "looking" for the Target. This is because my raycasts are in a slight reverse cone pattern - if anyone knows how to make the raycast very straight lines I think this would help. Pull requests welcome.
 
