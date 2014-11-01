@@ -71,8 +71,10 @@ public class RCSeeker : MonoBehaviour
     bool seek;
     directions.Clear ();
     while (state=="avoid") {
-      // check if there is something in the way of the target
+      
       transform.Translate (Vector2.up * speed * Time.smoothDeltaTime);
+      
+      // check if there is something in the way of the target
       seek = seekCheck (); // checks for something in front of the Target game object
       obstacle = obstacleCheck (); // checks for an obstacle directly in front
       
@@ -188,10 +190,8 @@ public class RCSeeker : MonoBehaviour
   
   bool obstacleCheck ()
   {
-    Vector2 direction;
-    direction = transform.up;
+    Vector2 direction = transform.up; /* works for a top-down game, for a platformer try transform.forward */
     bool hasObstacle = hasObstacles (direction, "yellow");
-
     
     return hasObstacle;
   }
@@ -207,7 +207,6 @@ public class RCSeeker : MonoBehaviour
   {
     RaycastHit2D obstacle;
     while (state=="rotate") {
-      // save randomAngle in a array
       if (DEBUG) Debug.Log ("--state: rotate--");
       float randomAngle = Random.Range (-rotationRange, rotationRange);
       Vector3 directionChange = new Vector3 (randomAngle, 0, 0);
@@ -222,12 +221,13 @@ public class RCSeeker : MonoBehaviour
         Debug.Log (!obstacle && !obstacle.collider);
       }
    
-      if (!obstacle && !obstacle.collider) {
+      if (!obstacle || !obstacle.collider) {
         if (DEBUG) {
           Debug.Log ("---no obstacle, moving:---");
         }        
-        Vector3 vectorToTarget = direction - transform.position;      
-        float zRotation = Mathf.Atan2 ((vectorToTarget.y - transform.position.y), (vectorToTarget.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+        Vector3 directionPoint = transform.position + direction.normalized; 
+        Vector3 vectorToTarget =  directionPoint - transform.position;      
+        float zRotation = Mathf.Atan2 (vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
         transform.eulerAngles = new Vector3 (0, 0, zRotation);
         // if there is no obstacle, then actually rotate in that direction
         state = "start-move";
