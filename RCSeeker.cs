@@ -24,7 +24,7 @@ public class RCSeeker : MonoBehaviour
   private static bool DEBUG_DRAW = true;
   private List<Vector2> directions;
   private float rotationRange = 5;
-
+  public int LayerToMask;
   
   // todo: store am array of directions
   Vector2 origin;
@@ -132,12 +132,12 @@ public class RCSeeker : MonoBehaviour
     }
       
     
-    hits = Physics2D.RaycastAll (transform.position, direction, collisionDistance, 1 << 8);
+    hits = Physics2D.RaycastAll (transform.position, direction, collisionDistance, 1 << LayerToMask);
     
     Vector2 left = new Vector2 (-0.3F, 0);
     Vector2 leftOrigin = new Vector2 (transform.position.x, transform.position.y) + left;
     directionLeft = direction + left;
-    hitsLeft = Physics2D.RaycastAll (leftOrigin, directionLeft, collisionDistance, 1 << 8);
+    hitsLeft = Physics2D.RaycastAll (leftOrigin, directionLeft, collisionDistance, 1 << LayerToMask);
     if (DEBUG_DRAW) {
       Debug.DrawRay (leftOrigin, directionLeft * collisionDistance, color);
     }
@@ -146,7 +146,7 @@ public class RCSeeker : MonoBehaviour
     Vector2 right = new Vector2 (0.3F, 0);
     Vector2 rightOrigin = new Vector2 (transform.position.x, transform.position.y) + right;
     directionRight = direction + right;
-    hitsRight = Physics2D.RaycastAll (rightOrigin, directionRight, collisionDistance, 1 << 8);
+    hitsRight = Physics2D.RaycastAll (rightOrigin, directionRight, collisionDistance, 1 << LayerToMask);
     if (DEBUG_DRAW) {
       Debug.DrawRay (rightOrigin, directionRight * collisionDistance, color);
     }

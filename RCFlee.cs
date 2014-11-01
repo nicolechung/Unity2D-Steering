@@ -15,6 +15,8 @@ public class RCFlee : MonoBehaviour {
 
 	private static bool DEBUG = true;
 	private static bool DEBUG_DRAW = true;
+  
+  public int LayerToMask = 8;
 
 	private string state;
 
@@ -151,18 +153,18 @@ public class RCFlee : MonoBehaviour {
 		bool hasObstacle = false;
 		if (DEBUG_DRAW) Debug.DrawRay (transform.position, direction*directionDistance, color);
 		
-		hits = Physics2D.RaycastAll (transform.position, direction, directionDistance, 1 << 8);
+		hits = Physics2D.RaycastAll (transform.position, direction, directionDistance, 1 << LayerToMask);
 		
 		Vector2 left = new Vector2(-0.3F, 0);
 		Vector2 leftOrigin = new Vector2(transform.position.x, transform.position.y) + left;
 		directionLeft = direction + left;
-		hitsLeft =  Physics2D.RaycastAll (leftOrigin, directionLeft, directionDistance, 1 << 8);
+		hitsLeft =  Physics2D.RaycastAll (leftOrigin, directionLeft, directionDistance, 1 << LayerToMask);
 		if (DEBUG_DRAW) Debug.DrawRay (leftOrigin, directionLeft*directionDistance, color);
 		
 		Vector2 right = new Vector2(0.3F, 0);
 		Vector2 rightOrigin = new Vector2(transform.position.x, transform.position.y) + right;
 		directionRight = direction + right;
-		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, directionDistance, 1 << 8);
+		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, directionDistance, 1 << LayerToMask);
 		if (DEBUG_DRAW) Debug.DrawRay (rightOrigin, directionRight*directionDistance, color);
 		// is there a collision?
 		

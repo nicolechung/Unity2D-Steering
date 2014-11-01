@@ -19,6 +19,7 @@ Edit > Project Settings > Tags and Layers
 ```
 ![Look at the number](https://raw.githubusercontent.com/nicolechung/Unity2D-Steering/master/images/layer-8.png)
 
+Then set the "Layer to Mask" to same number as your layer.
 
 #Seeker
 I have multiple colliders on my Seeker (Box2D and Circle);

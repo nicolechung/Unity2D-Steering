@@ -24,7 +24,7 @@ public class RCWander : MonoBehaviour {
 	
 	private static bool DEBUG = false; // to turn debug messages on an off
 	private static bool DEBUG_DRAW = false; // to turn Debug lines on and off
-	private static int LAYER_MASK = 8; // make sure your player isn't on this list!
+	public int LayerToMask = 8; // make sure your player isn't on this list!
 	public int straightAhead = 10; // how much to go in a given direction before turning
 	private int count;
 	// todo: store am array of directions
@@ -102,18 +102,18 @@ public class RCWander : MonoBehaviour {
 		bool hasObstacle = false;
 		if (DEBUG_DRAW) Debug.DrawRay (transform.position, direction*collisionDistance, color);
 		
-		hits = Physics2D.RaycastAll (transform.position, direction, collisionDistance, 1 << LAYER_MASK);
+		hits = Physics2D.RaycastAll (transform.position, direction, collisionDistance, 1 << LayerToMask);
 		
 		Vector2 left = new Vector2(-0.3F, 0);
 		Vector2 leftOrigin = new Vector2(transform.position.x, transform.position.y) + left;
 		directionLeft = direction + left;
-		hitsLeft =  Physics2D.RaycastAll (leftOrigin, directionLeft, collisionDistance, 1 << LAYER_MASK);
+		hitsLeft =  Physics2D.RaycastAll (leftOrigin, directionLeft, collisionDistance, 1 << LayerToMask);
 		if (DEBUG_DRAW) Debug.DrawRay (leftOrigin, directionLeft*collisionDistance, color);
 		
 		Vector2 right = new Vector2(0.3F, 0);
 		Vector2 rightOrigin = new Vector2(transform.position.x, transform.position.y) + right;
 		directionRight = direction + right;
-		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, collisionDistance, 1 << LAYER_MASK);
+		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, collisionDistance, 1 << LayerToMask);
 		if (DEBUG_DRAW) Debug.DrawRay (rightOrigin, directionRight*collisionDistance, color);
 		// is there a collision?
 		
