@@ -57,8 +57,8 @@ public class RCFlee : MonoBehaviour {
 		while (!hasHitTarget && state=="flee") {
 			bool flee;
 			flee = fleeCheck();
-			Debug.Log ("fleeing: okay?");
-			Debug.Log (flee);
+			if (DEBUG) Debug.Log ("fleeing: okay?");
+			if (DEBUG) Debug.Log (flee);
 			if (flee) {	
 				transform.Translate (Vector2.up * speed * Time.smoothDeltaTime);
 			} else {
@@ -71,7 +71,7 @@ public class RCFlee : MonoBehaviour {
 	IEnumerator avoidObstacle() {
 		while(state=="rotate") {
 			// save randomAngle in a array
-			Debug.Log ("--state: rotate--");
+			if (DEBUG) Debug.Log ("--state: rotate--");
 			float randomAngle = Random.Range (-rotationRange, rotationRange);
 			Vector2 directionChange = new Vector2(randomAngle, 0);
 
@@ -82,8 +82,8 @@ public class RCFlee : MonoBehaviour {
 			// choose a random direction and do an obstacle check in that direction
 			bool obstacle;
 			obstacle = hasObstacles(direction, "yellow");
-			Debug.Log ("---obstacle?:---");
-			Debug.Log (obstacle);
+			if (DEBUG) Debug.Log ("---obstacle?:---");
+			if (DEBUG) Debug.Log (obstacle);
 			if (!obstacle) {
 				Debug.Log ("---no obstacle, moving:---");
 				float zRotation = Mathf.Atan2( (direction.y - transform.position.y), (direction.x - transform.position.x) ) * Mathf.Rad2Deg - 90;
@@ -149,7 +149,7 @@ public class RCFlee : MonoBehaviour {
 		}
 		
 		bool hasObstacle = false;
-		Debug.DrawRay (transform.position, direction*directionDistance, color);
+		if (DEBUG_DRAW) Debug.DrawRay (transform.position, direction*directionDistance, color);
 		
 		hits = Physics2D.RaycastAll (transform.position, direction, directionDistance, 1 << 8);
 		
@@ -157,13 +157,13 @@ public class RCFlee : MonoBehaviour {
 		Vector2 leftOrigin = new Vector2(transform.position.x, transform.position.y) + left;
 		directionLeft = direction + left;
 		hitsLeft =  Physics2D.RaycastAll (leftOrigin, directionLeft, directionDistance, 1 << 8);
-		Debug.DrawRay (leftOrigin, directionLeft*directionDistance, color);
+		if (DEBUG_DRAW) Debug.DrawRay (leftOrigin, directionLeft*directionDistance, color);
 		
 		Vector2 right = new Vector2(0.3F, 0);
 		Vector2 rightOrigin = new Vector2(transform.position.x, transform.position.y) + right;
 		directionRight = direction + right;
 		hitsRight =  Physics2D.RaycastAll (rightOrigin, directionRight, directionDistance, 1 << 8);
-		Debug.DrawRay (rightOrigin, directionRight*directionDistance, color);
+		if (DEBUG_DRAW) Debug.DrawRay (rightOrigin, directionRight*directionDistance, color);
 		// is there a collision?
 		
 		foreach(RaycastHit2D hit in hits) {
