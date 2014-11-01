@@ -24,7 +24,7 @@ public class RCSeeker : MonoBehaviour
   private static bool DEBUG_DRAW = true;
   private List<Vector2> directions;
   private float rotationRange = 5;
-  public int LayerToMask;
+  public int LayerToMask = 8;
   
   // todo: store am array of directions
   Vector2 origin;
@@ -219,7 +219,7 @@ public class RCSeeker : MonoBehaviour
       obstacle = hasObstacles (direction, "yellow");
       if (DEBUG) {
         Debug.Log ("---obstacle?:---");
-        Debug.Log (obstacle);
+        Debug.Log (!obstacle && !obstacle.collider);
       }
    
       if (!obstacle && !obstacle.collider) {
